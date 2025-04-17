@@ -33,7 +33,7 @@ src/
 
 ```bash
 # Clone project
-git clone https://github.com/your-repo/dormbk-frontend.git
+git clone https://github.com/LoveTechwCat/DormBK-FE.git
 cd dormbk-frontend
 
 # Cài dependency
