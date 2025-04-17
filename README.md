@@ -69,7 +69,7 @@ npm run dev
 ## 📬 Liên hệ
 
 Mọi ý kiến đóng góp hoặc lỗi vui lòng gửi về
-[your-email@example.com](mailto:your-email@example.com)
+[your-email@example.com](mailto:huy.nguyenkhackhanh@gmail.com)
 
 ---
 
