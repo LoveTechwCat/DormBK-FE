@@ -1,22 +1,20 @@
-import studentManagementIcon from '@/assets/students.svg';
-import roomOccupancyIcon from '@/assets/room.svg';
-import adminToolsIcon from '@/assets/shield.svg';
 import FeatureCard from './FeatureCard';
+import { FaBuilding, FaShieldAlt, FaUser } from 'react-icons/fa';
 
 const FeatureCards = () => (
   <div className='mt-16 grid grid-cols-1 gap-8 md:grid-cols-3'>
     <FeatureCard
-      icon={studentManagementIcon}
+      icon={<FaUser />}
       title='Student Management'
       description='Efficiently manage student information, room assignments, and personal records.'
     />
     <FeatureCard
-      icon={roomOccupancyIcon}
+      icon={<FaBuilding />}
       title='Room Occupancy'
       description='Monitor room availability, occupancy rates, and manage room assignments.'
     />
     <FeatureCard
-      icon={adminToolsIcon}
+      icon={<FaShieldAlt />}
       title='Administrative Tools'
       description='Powerful tools for administrators to monitor and manage the entire dormitory system.'
     />

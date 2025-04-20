@@ -1,18 +1,16 @@
 import { FaUserPlus } from 'react-icons/fa';
-import { Button } from '@/components/ui/button'; // Import Button
 
 const QuickActions = () => {
   return (
-    <div className="mt-4">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
-      <Button
-        type="button"
-        className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-md"
-        style={{ backgroundColor: '#1488DB' }}
-      >
+    <div className='mt-4'>
+      <h3 className='mb-4 text-lg font-semibold text-gray-800'>
+        Quick Actions
+      </h3>
+
+      <div className='flex w-fit cursor-pointer flex-col items-center rounded-lg bg-[#1488DB] px-[136px] py-5 font-semibold text-white shadow-md transition-colors hover:bg-blue-700'>
         <FaUserPlus />
-        <p className="text-lg">Add new student</p>
-      </Button>
+        <p className='text-lg'>Add new student</p>
+      </div>
     </div>
   );
 };
