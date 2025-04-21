@@ -3,7 +3,7 @@ import githubIcon from '@/assets/github-icon.svg';
 
 const Footer = () => {
   return (
-    <footer className={`w-full bg-[#0A2678] py-4 text-white`}>
+    <footer className='w-full bg-[#0A2678] py-4 text-white'>
       <div className='text-sm` flex items-center justify-between px-6'>
         <div className='flex items-center space-x-2'>
           <img src={logo} alt='Logo' className='h-8 w-8' />

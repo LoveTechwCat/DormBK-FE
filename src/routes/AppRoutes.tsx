@@ -3,7 +3,7 @@ import { RouteObject } from 'react-router-dom';
 import Login from '@/pages/login/Login';
 import Home from '@/pages/home/Home';
 import Dashboard from '@/pages/dashboard/Dashboard';
-
+import Statistics from '@/pages/statistics/Statistics';
 
 export const appRoutes: RouteObject[] = [
   {
@@ -17,5 +17,9 @@ export const appRoutes: RouteObject[] = [
   {
     path: '/dashboard',
     element: <Dashboard />,
+  },
+  {
+    path: '/statistics',
+    element: <Statistics />,
   },
 ];
