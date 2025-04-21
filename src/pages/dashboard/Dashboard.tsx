@@ -1,6 +1,6 @@
 import { FaUser, FaBuilding, FaChartBar } from 'react-icons/fa';
 import Sidebar from '@/components/layout/Sidebar';
-import Header from './components/Header';
+import Header from '@/components/layout/AfterLogin/Header';
 import DashboardCard from './components/DashboardCard';
 import QuickActions from './components/QuickActions';
 import Footer from '@/components/layout/Footer';
