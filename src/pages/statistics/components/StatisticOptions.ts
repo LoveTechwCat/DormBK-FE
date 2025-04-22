@@ -40,6 +40,5 @@ export const STATISTIC_OPTIONS: StatisticOption[] = [
   {
     key: 'validCards',
     label: 'Number of Valid Dorm Cards',
-    inputs: [], // No inputs needed
   },
 ];
