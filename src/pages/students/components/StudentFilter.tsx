@@ -15,6 +15,8 @@ interface Props {
   setSearchQuery: (val: string) => void;
   selectedStatus: string;
   setSelectedStatus: (val: string) => void;
+  sortOrder: 'none' | 'asc' | 'desc';
+  setSortOrder: (val: 'none' | 'asc' | 'desc') => void;
 }
 
 const StudentFilter: FC<Props> = ({
@@ -22,6 +24,8 @@ const StudentFilter: FC<Props> = ({
   setSearchQuery,
   selectedStatus,
   setSelectedStatus,
+  sortOrder,
+  setSortOrder,
 }) => {
   return (
     <div className='mb-4 flex items-center justify-between'>
@@ -34,6 +38,19 @@ const StudentFilter: FC<Props> = ({
           onKeyDown={(e) => e.key === 'Enter' && e.preventDefault()}
         />
         <Button variant='secondary'>Search</Button>
+        <Select
+          value={sortOrder}
+          onValueChange={(value) => setSortOrder(value as 'asc' | 'desc')}
+        >
+          <SelectTrigger className='w-[130px] border'>
+            <SelectValue placeholder='Sort SSN' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value='none'>No Sort</SelectItem>
+            <SelectItem value='asc'>SSN ↑</SelectItem>
+            <SelectItem value='desc'>SSN ↓</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className='flex items-center gap-2'>
         <img src={filter} alt='filter' className='h-6 w-6' />
@@ -48,6 +65,7 @@ const StudentFilter: FC<Props> = ({
             <SelectItem value='all'>All students</SelectItem>
             <SelectItem value='Active'>Active</SelectItem>
             <SelectItem value='Non_Active'>Non active</SelectItem>
+            <SelectItem value='No_family'>No Family</SelectItem>
           </SelectContent>
         </Select>
       </div>
