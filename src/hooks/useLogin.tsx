@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
-import { useAuth } from '@/hooks/AuthContext';
+import { useAuth } from '@/contexts/auth/useAuth';
+import { User } from '@/contexts/auth/types';
 
 export const useLogin = () => {
   const { setIsAuthenticated, setUser } = useAuth();
@@ -16,7 +17,7 @@ export const useLogin = () => {
 
     try {
       const response = await login(username.trim(), password.trim());
-      const data = response as { user: any; token: string };
+      const data = response as { user: User; token: string };
 
       setIsAuthenticated(true);
       setUser(data.user);
@@ -25,8 +26,8 @@ export const useLogin = () => {
       localStorage.setItem('authUser', JSON.stringify(data.user));
 
       navigate('/dashboard');
-    } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || 'Login failed');
+    } catch (err) {
+      setErrorMsg((err as Error).message || 'Login failed');
     }
   };
 

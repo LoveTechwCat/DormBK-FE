@@ -5,7 +5,7 @@ import StudentFilter from './components/StudentFilter';
 import StudentTable from './components/StudentTable';
 import Footer from '@/components/layout/Footer';
 import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/AfterLogin/Header';
+import Header from '@/components/layout/Header';
 
 const StudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
@@ -40,7 +40,7 @@ const StudentsPage = () => {
   };
 
   return (
-    <div className='flex min-h-screen flex-col'>
+    <div className='flex min-h-screen w-full flex-col'>
       <Header />
       <div className='flex flex-1'>
         <Sidebar />
