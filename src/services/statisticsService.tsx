@@ -24,7 +24,7 @@ export const handleStatisticsSubmit = async (
       break;
     }
     case 'validCards':
-      await handleFetch(fetchValidDormCards);
+      await handleFetch(() => fetchValidDormCards());
       break;
     default:
       throw new Error('Invalid statistic key');

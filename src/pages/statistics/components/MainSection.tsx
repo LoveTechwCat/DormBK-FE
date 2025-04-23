@@ -28,7 +28,9 @@ const MainSection = () => {
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    console.log('handleSubmit', selectedKey, formData);
     await handleStatisticsSubmit(selectedKey, formData, handleFetch);
+    setFormData({});
   };
 
   return (
