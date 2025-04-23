@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { getAllStudents, Student } from '@/services/studentService';
+import {
+  getAllStudents,
+  Student,
+  getNotFamilyStudent,
+} from '@/services/studentService';
 import StudentHeader from './components/StudentHeader';
 import StudentFilter from './components/StudentFilter';
 import StudentTable from './components/StudentTable';
@@ -12,10 +16,15 @@ const StudentsPage = () => {
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [noFamilyStudent, setNoFamilyStudent] = useState<Student[]>([]);
+  const [sortOrder, setSortOrder] = useState<'none' | 'asc' | 'desc'>('none');
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getAllStudents();
+      const noFamilyData = await getNotFamilyStudent();
+      console.log('No family data:', noFamilyData);
+      setNoFamilyStudent(noFamilyData);
       setStudents(data);
       setFilteredStudents(data);
     };
@@ -23,16 +32,36 @@ const StudentsPage = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = students.filter((student) => {
-      const matchesStatus =
-        selectedStatus === 'all' || student.studyStatus === selectedStatus;
-      const matchesSearch = student.ssn
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      return matchesStatus && matchesSearch;
-    });
+    let filtered: Student[] = [];
+
+    if (selectedStatus === 'No_family') {
+      const noFamilySSNs = new Set(noFamilyStudent.map((s) => s.ssn));
+      filtered = students.filter((student) => {
+        const matchesSearch = student.ssn
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+        return noFamilySSNs.has(student.ssn) && matchesSearch;
+      });
+    } else {
+      filtered = students.filter((student) => {
+        const matchesStatus =
+          selectedStatus === 'all' || student.studyStatus === selectedStatus;
+        const matchesSearch = student.ssn
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+        return matchesStatus && matchesSearch;
+      });
+    }
+    if (sortOrder !== 'none') {
+      filtered.sort((a, b) => {
+        return sortOrder === 'asc'
+          ? a.ssn.localeCompare(b.ssn)
+          : b.ssn.localeCompare(a.ssn);
+      });
+    }
+
     setFilteredStudents(filtered);
-  }, [students, searchQuery, selectedStatus]);
+  }, [students, searchQuery, selectedStatus, noFamilyStudent, sortOrder]);
 
   const handleDelete = (id: string) => {
     console.log('Delete student with ID:', id);
@@ -55,6 +84,8 @@ const StudentsPage = () => {
                   setSearchQuery={setSearchQuery}
                   selectedStatus={selectedStatus}
                   setSelectedStatus={setSelectedStatus}
+                  sortOrder={sortOrder}
+                  setSortOrder={setSortOrder}
                 />
               </div>
               <div className='mx-6 rounded-md border'>

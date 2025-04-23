@@ -7,7 +7,7 @@ import { Cards } from './components/DashboardCardData';
 
 const Dashboard = () => (
   <div className='flex min-h-screen flex-col'>
-    <Header variant='user' />
+    <Header />
     <div className='flex flex-1'>
       <Sidebar />
       <main className='flex flex-1 flex-col justify-between bg-gray-100'>
