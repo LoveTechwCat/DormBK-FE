@@ -23,7 +23,6 @@ const StudentsPage = () => {
     const fetchData = async () => {
       const data = await getAllStudents();
       const noFamilyData = await getNotFamilyStudent();
-      console.log('No family data:', noFamilyData);
       setNoFamilyStudent(noFamilyData);
       setStudents(data);
       setFilteredStudents(data);
@@ -45,7 +44,7 @@ const StudentsPage = () => {
     } else {
       filtered = students.filter((student) => {
         const matchesStatus =
-          selectedStatus === 'all' || student.studyStatus === selectedStatus;
+          selectedStatus === 'all' || student.study_status === selectedStatus;
         const matchesSearch = student.ssn
           .toLowerCase()
           .includes(searchQuery.toLowerCase());

@@ -17,7 +17,7 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-const StudentTable: FC<Props> = ({ students, onDelete }) => {
+const StudentTable: FC<Props> = ({ students }) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [openView, setOpenView] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -46,36 +46,46 @@ const StudentTable: FC<Props> = ({ students, onDelete }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {students.map((student) => (
-          <TableRow key={student.ssn}>
-            <TableCell>{student.ssn}</TableCell>
-            <TableCell>{student.studentId}</TableCell>
-            <TableCell>{student.fullName}</TableCell>
-            <TableCell>{student.faculty}</TableCell>
-            <TableCell>{student.roomId ? student.roomId : 'None'}</TableCell>
-            <TableCell>
-              {student.buildingId ? student.buildingId : 'None'}
-            </TableCell>
-            <TableCell>{student.studyStatus}</TableCell>
-            <TableCell className='flex gap-2'>
-              <Button
-                className='bg-blue-100 hover:bg-sky-200'
-                variant='outline'
-                size='sm'
-                onClick={() => handleView(student)}
-              >
-                View
-              </Button>
-              <Button
-                variant='destructive'
-                size='sm'
-                onClick={() => handleDelete(student)}
-              >
-                Delete
-              </Button>
+        {students.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={8} className='text-center'>
+              No students found
             </TableCell>
           </TableRow>
-        ))}
+        ) : (
+          students.map((student) => (
+            <TableRow key={student.ssn}>
+              <TableCell>{student.ssn}</TableCell>
+              <TableCell>{student.student_id}</TableCell>
+              <TableCell>{student.full_name}</TableCell>
+              <TableCell>{student.faculty}</TableCell>
+              <TableCell>
+                {student.room_id ? student.room_id : 'None'}
+              </TableCell>
+              <TableCell>
+                {student.building_id ? student.building_id : 'None'}
+              </TableCell>
+              <TableCell>{student.study_status}</TableCell>
+              <TableCell className='flex gap-2'>
+                <Button
+                  className='bg-blue-100 hover:bg-sky-200'
+                  variant='outline'
+                  size='sm'
+                  onClick={() => handleView(student)}
+                >
+                  View
+                </Button>
+                <Button
+                  variant='destructive'
+                  size='sm'
+                  onClick={() => handleDelete(student)}
+                >
+                  Delete
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
       <StudentDetailDialog
         open={openView}

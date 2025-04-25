@@ -38,10 +38,11 @@ const StudentDetailDialog: FC<Props> = ({ open, onOpenChange, student }) => {
           </div>
           <div>
             <span className='font-semibold'>Student ID:</span>{' '}
-            {student.studentId}
+            {student.student_id}
           </div>
           <div>
-            <span className='font-semibold'>Full Name:</span> {student.fullName}
+            <span className='font-semibold'>Full Name:</span>{' '}
+            {student.full_name}
           </div>
           <div>
             <span className='font-semibold'>Birthday:</span>{' '}
@@ -53,46 +54,54 @@ const StudentDetailDialog: FC<Props> = ({ open, onOpenChange, student }) => {
           </div>
           <div>
             <span className='font-semibold'>Health State:</span>{' '}
-            {student.healthState}
+            {student.health_state}
           </div>
           <div>
             <span className='font-semibold'>Ethnic Group:</span>{' '}
-            {student.ethnicGroup}
+            {student.ethnic_group}
           </div>
           <div>
             <span className='font-semibold'>Faculty:</span> {student.faculty}
           </div>
           <div>
-            <span className='font-semibold'>Class:</span> {student.className}
+            <span className='font-semibold'>Class:</span> {student.class_name}
           </div>
           <div>
             <span className='font-semibold'>Study Status:</span>{' '}
-            {student.studyStatus}
+            {student.study_status}
           </div>
           <div>
             <span className='font-semibold'>Building:</span>{' '}
-            {student.buildingId}
+            {student.building_id}
           </div>
           <div>
-            <span className='font-semibold'>Room:</span> {student.roomId}
+            <span className='font-semibold'>Room:</span> {student.room_id}
           </div>
 
           <div className='md:col-span-2'>
             <span className='mb-1 block font-semibold'>Addresses:</span>
             <ul className='list-inside list-disc pl-4'>
-              {student.addresses.map((a, i) => (
-                <li key={i}>{`${a.commune}, ${a.district}, ${a.province}`}</li>
-              ))}
+              {Array.isArray(student.addresses) &&
+              student.addresses.length > 0 ? (
+                student.addresses.map((a, i) => <li key={i}>{a}</li>)
+              ) : (
+                <li>No addresses available</li>
+              )}
             </ul>
+          </div>
+          <div className='md:col-span-2'>
+            <span className='font-semibold'>Emails:</span>{' '}
+            {Array.isArray(student.emails) && student.emails.length > 0
+              ? student.emails.join(', ')
+              : 'No emails available'}
           </div>
 
           <div className='md:col-span-2'>
-            <span className='font-semibold'>Emails:</span>{' '}
-            {student.emails.join(', ')}
-          </div>
-          <div className='md:col-span-2'>
             <span className='font-semibold'>Phone Numbers:</span>{' '}
-            {student.phoneNumbers.join(', ')}
+            {Array.isArray(student.phone_numbers) &&
+            student.phone_numbers.length > 0
+              ? student.phone_numbers.join(', ')
+              : 'No phone numbers available'}
           </div>
         </div>
         <DialogFooter>
