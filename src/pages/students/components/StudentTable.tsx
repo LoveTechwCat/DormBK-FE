@@ -17,7 +17,7 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-const StudentTable: FC<Props> = ({ students }) => {
+const StudentTable: FC<Props> = ({ students, onDelete }) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [openView, setOpenView] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -96,6 +96,11 @@ const StudentTable: FC<Props> = ({ students }) => {
         open={openDelete}
         onOpenChange={setOpenDelete}
         student={selectedStudent}
+        onDeleted={(ssn) => {
+          setOpenDelete(false);
+          setSelectedStudent(null);
+          onDelete(ssn);
+        }}
       />
     </Table>
   );

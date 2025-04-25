@@ -13,15 +13,23 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   student: Student | null;
+  onDeleted?: (ssn: string) => void;
 }
 
-const StudentDeleteDialog: FC<Props> = ({ open, onOpenChange, student }) => {
+const StudentDeleteDialog: FC<Props> = ({
+  open,
+  onOpenChange,
+  student,
+  onDeleted,
+}) => {
   if (!student) return null;
   const handleDelete = async (ssn: string) => {
     try {
       await deleteStudent(ssn);
       onOpenChange(false);
-      window.location.reload();
+      if (onDeleted) {
+        onDeleted(ssn);
+      }
     } catch (error) {
       console.error('Failed to delete student:', error);
     }
