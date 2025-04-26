@@ -19,7 +19,7 @@ export const fetchDisciplinedStudents = async (
   const res = await axios.get<NumberOfDisciplinedStudents>(
     `/api/statistics/disciplined-students`,
     {
-      params: { from, to },
+      params: { startDate: from, endDate: to },
     },
   );
   console.log('Calling fetchDisciplinedStudents');
