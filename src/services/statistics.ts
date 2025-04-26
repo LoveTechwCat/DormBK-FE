@@ -13,13 +13,14 @@ interface NumberOfValidDormCards {
 }
 
 export const fetchDisciplinedStudents = async (
-  from: string,
-  to: string,
+  startDate: string,
+  endDate: string,
 ): Promise<NumberOfDisciplinedStudents> => {
+  console.log('from:', startDate, 'to:', endDate);
   const res = await axios.get<NumberOfDisciplinedStudents>(
-    `/api/statistics/disciplined-students`,
+    `/api/statistics/disciplined-students/`,
     {
-      params: { from, to },
+      params: { startDate, endDate },
     },
   );
   console.log('Calling fetchDisciplinedStudents');
