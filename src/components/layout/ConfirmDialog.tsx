@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -6,24 +6,35 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Student, deleteStudent } from '@/services/studentService';
 import { Button } from '@/components/ui/button';
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  student: Student | null;
+  onConfirm: () => Promise<void> | void;
+  title?: string;
+  message?: ReactNode;
+  confirmText?: string;
+  cancelText?: string;
+  confirmColor?: 'default' | 'destructive' | 'secondary' | 'blue';
 }
 
-const StudentDeleteDialog: FC<Props> = ({ open, onOpenChange, student }) => {
-  if (!student) return null;
-  const handleDelete = async (ssn: string) => {
+const ConfirmDialog: FC<Props> = ({
+  open,
+  onOpenChange,
+  onConfirm,
+  title = 'Confirm Action',
+  message = 'Are you sure you want to proceed?',
+  confirmText = 'Yes',
+  cancelText = 'Cancel',
+  confirmColor = 'destructive',
+}) => {
+  const handleConfirm = async () => {
     try {
-      await deleteStudent(ssn);
+      await onConfirm();
       onOpenChange(false);
-      window.location.reload();
     } catch (error) {
-      console.error('Failed to delete student:', error);
+      console.error('Confirmation failed:', error);
     }
   };
 
@@ -32,24 +43,18 @@ const StudentDeleteDialog: FC<Props> = ({ open, onOpenChange, student }) => {
       <DialogContent className='max-w-md rounded-2xl bg-white shadow-lg'>
         <DialogHeader>
           <DialogTitle className='text-xl font-semibold text-gray-800'>
-            Confirm Deletion
+            {title}
           </DialogTitle>
         </DialogHeader>
 
-        <p className='text-sm text-gray-700'>
-          Do you want to delete student with SSN:{' '}
-          <span className='font-semibold'>{student.ssn}</span>?
-        </p>
+        <div className='text-sm text-gray-700'>{message}</div>
 
         <DialogFooter className='pt-4'>
           <Button variant='secondary' onClick={() => onOpenChange(false)}>
-            Cancel
+            {cancelText}
           </Button>
-          <Button
-            variant='destructive'
-            onClick={() => handleDelete(student.ssn)}
-          >
-            Yes
+          <Button variant={confirmColor} onClick={handleConfirm}>
+            {confirmText}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -57,4 +62,4 @@ const StudentDeleteDialog: FC<Props> = ({ open, onOpenChange, student }) => {
   );
 };
 
-export default StudentDeleteDialog;
+export default ConfirmDialog;

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
 import { useAuth } from '@/contexts/auth/useAuth';
@@ -6,13 +5,15 @@ import { User } from '@/contexts/auth/types';
 
 export const useLogin = () => {
   const { setIsAuthenticated, setUser } = useAuth();
-  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (username: string, password: string) => {
+  const handleLogin = async (
+    username: string,
+    password: string,
+  ): Promise<{ success: boolean; message: string }> => {
     if (!username.trim() || !password.trim()) {
-      setErrorMsg('Username and password are required');
-      return;
+      const msg = 'Username and password are required';
+      return { success: false, message: msg };
     }
 
     try {
@@ -26,10 +27,12 @@ export const useLogin = () => {
       localStorage.setItem('authUser', JSON.stringify(data.user));
 
       navigate('/dashboard');
+      return { success: true, message: 'Login successful' };
     } catch (err) {
-      setErrorMsg((err as Error).message || 'Login failed');
+      const msg = (err as Error).message || 'Login failed';
+      return { success: false, message: msg };
     }
   };
 
-  return { errorMsg, handleLogin };
+  return { handleLogin };
 };
