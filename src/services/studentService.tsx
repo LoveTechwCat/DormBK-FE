@@ -1,22 +1,24 @@
 import axios from 'axios';
 
 export interface Student {
+  new_ssn: string;
   ssn: string;
-  studentId: string;
-  hasHealthInsurance: boolean;
-  studyStatus?: string;
-  className?: string;
-  faculty?: string;
-  buildingId?: string;
-  roomId?: string;
-  fullName: string;
+  first_name: string;
+  last_name: string;
   birthday: string;
-  sex?: string;
-  healthState?: string;
-  ethnicGroup?: string;
-  addresses: { commune: string; district: string; province: string }[];
-  emails: string[];
-  phoneNumbers: string[];
+  sex: string;
+  health_state: string | null;
+  ethnic_group: string | null;
+  student_id: string;
+  has_health_insurance: boolean;
+  study_status: string | null;
+  class_name: string | null;
+  faculty: string | null;
+  building_id: string;
+  room_id: string;
+  phone_numbers: string;
+  emails: string;
+  addresses: string;
 }
 
 export const getAllStudents = async (): Promise<Student[]> => {
@@ -42,12 +44,16 @@ export const updateStudent = async (
   ssn: string,
   student: Partial<Student>,
 ): Promise<Student> => {
-  const response = await axios.put<Student>(`/api/students/${ssn}`, student, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.put<Student>(`/api/students/${ssn}`, student, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getNotFamilyStudent = async (): Promise<Student[]> => {
