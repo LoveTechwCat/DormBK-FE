@@ -12,7 +12,9 @@ import EditListField from './EditListField';
 import EditAddressField from './EditAddressField';
 import { Student, updateStudent } from '@/services/studentService';
 import ConfirmDialog from '@/components/layout/ConfirmDialog';
-import { Toaster, toast } from 'react-hot-toast'; // Import toast
+import { Toaster, toast } from 'react-hot-toast';
+import SelectField from './SelectField';
+import CalendarIcon from '@/assets/calendar.svg';
 
 interface Address {
   commune: string;
@@ -94,14 +96,23 @@ const StudentDetailDialog: FC<Props> = ({
 
   const handleSave = async () => {
     try {
+      console.log('Saving student data:', formData);
       formData.birthday = formData.birthday.substring(0, 10);
       const data = await updateStudent(formData.ssn, formData);
       setIsEditing(false);
       handleUpdate(formData);
+      formData.ssn = formData.new_ssn;
       console.log('Student updated successfully:', data);
       toast.success('Student updated successfully!');
     } catch (error) {
-      toast.error(`Failed to update student: ${error}`);
+      formData.new_ssn = formData.ssn;
+      if ((error as any).response) {
+        toast.error(
+          `Failed to update student: ${(error as any).response.data.message}`,
+        );
+      } else {
+        toast.error('Failed to update student: Unknown error');
+      }
     }
   };
 
@@ -135,9 +146,9 @@ const StudentDetailDialog: FC<Props> = ({
         <div className='grid grid-cols-1 gap-4 text-sm text-gray-700 md:grid-cols-2'>
           <EditField
             label='SSN'
-            value={formData.ssn}
+            value={formData.new_ssn}
             isEditing={isEditing}
-            onChange={(value: any) => handleChange('ssn', value)}
+            onChange={(value: any) => handleChange('new_ssn', value)}
           />
           <EditField
             label='Student ID'
@@ -175,10 +186,15 @@ const StudentDetailDialog: FC<Props> = ({
             isEditing={isEditing}
             onChange={(value: any) => handleChange('birthday', value)}
             type='date'
+            icon={<img src={CalendarIcon} className='h-5 w-5' />}
           />
-          <EditField
+          <SelectField
             label='Sex'
-            value={formData.sex === 'M' ? 'Male' : 'Female'}
+            value={formData.sex}
+            options={[
+              { label: 'Male', value: 'M' },
+              { label: 'Female', value: 'F' },
+            ]}
             isEditing={isEditing}
             onChange={(value: any) => handleChange('sex', value)}
           />
@@ -206,23 +222,48 @@ const StudentDetailDialog: FC<Props> = ({
             isEditing={isEditing}
             onChange={(value: any) => handleChange('class_name', value)}
           />
-          <EditField
+          <SelectField
             label='Study Status'
             value={formData.study_status || ''}
+            options={[
+              { label: 'Active', value: 'Active' },
+              { label: 'Non active', value: 'Non_Active' },
+            ]}
             isEditing={isEditing}
-            onChange={(value: any) => handleChange('study_status', value)}
+            onChange={(value) => handleChange('study_status', value)}
           />
-          <EditField
+          <SelectField
             label='Building'
             value={formData.building_id || ''}
+            options={[
+              { label: 'BK001', value: 'BK001' },
+              { label: 'BK002', value: 'BK002' },
+              { label: 'BK003', value: 'BK003' },
+              { label: 'BK004', value: 'BK004' },
+            ]}
             isEditing={isEditing}
-            onChange={(value: any) => handleChange('building_id', value)}
+            onChange={(value) => handleChange('building_id', value)}
           />
-          <EditField
+          <SelectField
             label='Room'
             value={formData.room_id || ''}
+            options={[
+              { label: 'P.104', value: 'P.104' },
+              { label: 'P.201', value: 'P.201' },
+              { label: 'P.202', value: 'P.202' },
+              { label: 'P.203', value: 'P.203' },
+              { label: 'P.204', value: 'P.204' },
+              { label: 'P.301', value: 'P.301' },
+              { label: 'P.302', value: 'P.302' },
+              { label: 'P.303', value: 'P.303' },
+              { label: 'P.304', value: 'P.304' },
+              { label: 'P.401', value: 'P.401' },
+              { label: 'P.402', value: 'P.402' },
+              { label: 'P.403', value: 'P.403' },
+              { label: 'P.404', value: 'P.404' },
+            ]}
             isEditing={isEditing}
-            onChange={(value: any) => handleChange('room_id', value)}
+            onChange={(value) => handleChange('room_id', value)}
           />
 
           <EditAddressField

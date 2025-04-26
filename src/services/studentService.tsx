@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export interface Student {
+  new_ssn: string;
   ssn: string;
   first_name: string;
   last_name: string;
