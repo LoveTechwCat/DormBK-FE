@@ -23,7 +23,6 @@ const StudentsPage = () => {
     const fetchData = async () => {
       const data = await getAllStudents();
       const noFamilyData = await getNotFamilyStudent();
-      console.log('No family data:', noFamilyData);
       setNoFamilyStudent(noFamilyData);
       setStudents(data);
       setFilteredStudents(data);
@@ -45,7 +44,7 @@ const StudentsPage = () => {
     } else {
       filtered = students.filter((student) => {
         const matchesStatus =
-          selectedStatus === 'all' || student.studyStatus === selectedStatus;
+          selectedStatus === 'all' || student.study_status === selectedStatus;
         const matchesSearch = student.ssn
           .toLowerCase()
           .includes(searchQuery.toLowerCase());
@@ -66,6 +65,11 @@ const StudentsPage = () => {
   const handleDelete = (id: string) => {
     console.log('Delete student with ID:', id);
     setStudents((prev) => prev.filter((s) => s.ssn !== id));
+  };
+  const handleUpdate = (updatedStudent: Student) => {
+    setStudents((prev) =>
+      prev.map((s) => (s.ssn === updatedStudent.ssn ? updatedStudent : s)),
+    );
   };
 
   return (
@@ -92,6 +96,7 @@ const StudentsPage = () => {
                 <StudentTable
                   students={filteredStudents}
                   onDelete={handleDelete}
+                  handleUpdate={handleUpdate}
                 />
               </div>
             </div>
