@@ -2,25 +2,27 @@ import React, { useState } from 'react';
 import { useLogin } from '../../../hooks/useLogin';
 import LoginTextInput from './LoginTextInput';
 import LoginSubmit from './LoginSubmit';
+import toast, { Toaster } from 'react-hot-toast';
 
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { errorMsg, handleLogin } = useLogin();
+  const { handleLogin } = useLogin();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    handleLogin(username, password);
+    const { success, message } = await handleLogin(username, password);
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
   };
 
   return (
     <div>
+      <Toaster />
       <form onSubmit={handleSubmit} className='bg-white p-8'>
-        {errorMsg && (
-          <div className='mb-4 text-center text-sm text-red-500'>
-            {errorMsg}
-          </div>
-        )}
         <LoginTextInput
           name='Username'
           value={username}

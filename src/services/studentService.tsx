@@ -44,12 +44,16 @@ export const updateStudent = async (
   ssn: string,
   student: Partial<Student>,
 ): Promise<Student> => {
-  const response = await axios.put<Student>(`/api/students/${ssn}`, student, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.put<Student>(`/api/students/${ssn}`, student, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getNotFamilyStudent = async (): Promise<Student[]> => {

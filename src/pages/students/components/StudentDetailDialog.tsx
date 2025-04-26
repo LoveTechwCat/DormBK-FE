@@ -15,6 +15,7 @@ import ConfirmDialog from '@/components/layout/ConfirmDialog';
 import { Toaster, toast } from 'react-hot-toast';
 import SelectField from './SelectField';
 import CalendarIcon from '@/assets/calendar.svg';
+import BooleanSelectField from './BooleanSelectField';
 
 interface Address {
   commune: string;
@@ -95,21 +96,33 @@ const StudentDetailDialog: FC<Props> = ({
   };
 
   const handleSave = async () => {
+    console.log('Saving student:', formData);
     try {
-      console.log('Saving student data:', formData);
       formData.birthday = formData.birthday.substring(0, 10);
-      const data = await updateStudent(formData.ssn, formData);
+      formData.has_health_insurance = formData.has_health_insurance === true;
+      const data = await updateStudent(formData.new_ssn, formData);
+      console.log('Updated student:', data);
       setIsEditing(false);
       handleUpdate(formData);
       formData.ssn = formData.new_ssn;
-      console.log('Student updated successfully:', data);
       toast.success('Student updated successfully!');
     } catch (error) {
       formData.new_ssn = formData.ssn;
       if ((error as any).response) {
-        toast.error(
-          `Failed to update student: ${(error as any).response.data.message}`,
-        );
+        if ((error as any).response.data.error === 'Validation error') {
+          const fieldErrors: Record<string, string[]> = (error as any).response
+            .data.details.fieldErrors;
+
+          const errorMessages = Object.values(fieldErrors)
+            .map((errors: string[]) => errors[0])
+            .join('. ');
+
+          toast.error(`Failed to update student: ${errorMessages}`);
+        } else {
+          toast.error(
+            `Failed to update student: ${(error as any).response.data.message}`,
+          );
+        }
       } else {
         toast.error('Failed to update student: Unknown error');
       }
@@ -197,6 +210,18 @@ const StudentDetailDialog: FC<Props> = ({
             ]}
             isEditing={isEditing}
             onChange={(value: any) => handleChange('sex', value)}
+          />
+          <BooleanSelectField
+            label='Has health insurance'
+            value={formData.has_health_insurance}
+            options={[
+              { label: 'Yes', value: true },
+              { label: 'No', value: false },
+            ]}
+            isEditing={isEditing}
+            onChange={(value: any) =>
+              handleChange('has_health_insurance', value)
+            }
           />
           <EditField
             label='Health State'
