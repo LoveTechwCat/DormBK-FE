@@ -66,6 +66,11 @@ const StudentsPage = () => {
     console.log('Delete student with ID:', id);
     setStudents((prev) => prev.filter((s) => s.ssn !== id));
   };
+  const handleUpdate = (updatedStudent: Student) => {
+    setStudents((prev) =>
+      prev.map((s) => (s.ssn === updatedStudent.ssn ? updatedStudent : s)),
+    );
+  };
 
   return (
     <div className='flex min-h-screen w-full flex-col'>
@@ -91,6 +96,7 @@ const StudentsPage = () => {
                 <StudentTable
                   students={filteredStudents}
                   onDelete={handleDelete}
+                  handleUpdate={handleUpdate}
                 />
               </div>
             </div>

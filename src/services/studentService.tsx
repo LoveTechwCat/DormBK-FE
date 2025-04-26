@@ -2,21 +2,22 @@ import axios from 'axios';
 
 export interface Student {
   ssn: string;
+  first_name: string;
+  last_name: string;
+  birthday: string;
+  sex: string;
+  health_state: string | null;
+  ethnic_group: string | null;
   student_id: string;
   has_health_insurance: boolean;
-  study_status?: string;
-  class_name?: string;
-  faculty?: string;
-  building_id?: string;
-  room_id?: string;
-  full_name: string;
-  birthday: string;
-  sex?: string;
-  health_state?: string;
-  ethnic_group?: string;
-  addresses: string[];
-  emails: string[];
-  phone_numbers: string[];
+  study_status: string | null;
+  class_name: string | null;
+  faculty: string | null;
+  building_id: string;
+  room_id: string;
+  phone_numbers: string;
+  emails: string;
+  addresses: string;
 }
 
 export const getAllStudents = async (): Promise<Student[]> => {

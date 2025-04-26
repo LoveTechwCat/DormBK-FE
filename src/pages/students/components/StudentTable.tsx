@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Student } from '@/services/studentService';
+import { deleteStudent, Student } from '@/services/studentService';
 import {
   Table,
   TableBody,
@@ -9,15 +9,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import StudentDeleteDialog from './StudentDeleteDialog';
+import ConfirmDialog from '@/components/layout/ConfirmDialog';
 import StudentDetailDialog from './StudentDetailDialog';
 
 interface Props {
   students: Student[];
   onDelete: (id: string) => void;
+  handleUpdate: (student: Student) => void;
 }
 
-const StudentTable: FC<Props> = ({ students, onDelete }) => {
+const StudentTable: FC<Props> = ({ students, onDelete, handleUpdate }) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [openView, setOpenView] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -57,7 +58,9 @@ const StudentTable: FC<Props> = ({ students, onDelete }) => {
             <TableRow key={student.ssn}>
               <TableCell>{student.ssn}</TableCell>
               <TableCell>{student.student_id}</TableCell>
-              <TableCell>{student.full_name}</TableCell>
+              <TableCell>
+                {student.first_name + ' ' + student.last_name}
+              </TableCell>
               <TableCell>{student.faculty}</TableCell>
               <TableCell>
                 {student.room_id ? student.room_id : 'None'}
@@ -91,16 +94,28 @@ const StudentTable: FC<Props> = ({ students, onDelete }) => {
         open={openView}
         onOpenChange={setOpenView}
         student={selectedStudent}
+        handleUpdate={handleUpdate}
       />
-      <StudentDeleteDialog
+      <ConfirmDialog
         open={openDelete}
         onOpenChange={setOpenDelete}
-        student={selectedStudent}
-        onDeleted={(ssn) => {
-          setOpenDelete(false);
-          setSelectedStudent(null);
-          onDelete(ssn);
+        onConfirm={() => {
+          if (selectedStudent) {
+            deleteStudent(selectedStudent.ssn).then(() =>
+              onDelete?.(selectedStudent.ssn),
+            );
+          }
         }}
+        title='Confirm Deletion'
+        message={
+          <>
+            Do you want to delete student with SSN:{' '}
+            <span className='font-semibold'>
+              {selectedStudent?.ssn ?? 'N/A'}
+            </span>
+            ?
+          </>
+        }
       />
     </Table>
   );
