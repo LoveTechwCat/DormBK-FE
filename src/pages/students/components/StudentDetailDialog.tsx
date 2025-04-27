@@ -7,15 +7,15 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import EditField from './EditField';
-import EditListField from './EditListField';
-import EditAddressField from './EditAddressField';
+import EditField from '../../../components/layout/EditField';
+import EditListField from '../../../components/layout/EditListField';
+import EditAddressField from '../../../components/layout/EditAddressField';
 import { Student, updateStudent } from '@/services/studentService';
 import ConfirmDialog from '@/components/layout/ConfirmDialog';
 import { Toaster, toast } from 'react-hot-toast';
-import SelectField from './SelectField';
+import SelectField from '../../../components/layout/SelectField';
 import CalendarIcon from '@/assets/calendar.svg';
-import BooleanSelectField from './BooleanSelectField';
+import BooleanSelectField from '../../../components/layout/BooleanSelectField';
 
 interface Address {
   commune: string;
