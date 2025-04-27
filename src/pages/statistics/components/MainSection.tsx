@@ -39,11 +39,13 @@ const MainSection = () => {
       setFormData({});
       setLocalError(null);
     } catch (err) {
+      let errorMessage = 'Unexpected error';
       if (err instanceof Error) {
-        setLocalError(err.message);
-      } else {
-        setLocalError('Unexpected error');
+        errorMessage = err.message;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
       }
+      setLocalError(errorMessage);
     }
   };
 
@@ -123,11 +125,11 @@ const MainSection = () => {
             </div>
             <pre className='text-sm whitespace-pre-wrap'>
               {localError || error}
-            </pre>{' '}
+            </pre>
           </div>
         )}
 
-        {(data as ReactNode) && (
+        {(data as ReactNode) && !(localError || error) && (
           <div
             className={`transition-opacity duration-300 ${resetting ? 'opacity-0' : 'opacity-100'}`}
           >
