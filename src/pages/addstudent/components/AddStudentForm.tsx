@@ -42,7 +42,6 @@ const AddStudentForm = () => {
   });
 
   const [isEditing, setIsEditing] = useState(true);
-  const [confirmCancelOpen, setConfirmCancelOpen] = useState(false);
   const [confirmSaveOpen, setConfirmSaveOpen] = useState(false);
 
   const handleChange = (field: string, value: any) => {
