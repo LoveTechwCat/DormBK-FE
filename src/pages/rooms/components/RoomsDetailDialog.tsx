@@ -25,19 +25,19 @@ const RoomDetailDialog: FC<Props> = ({ open, onOpenChange, room }) => {
 
         <div className='mt-4 space-y-2 text-gray-700'>
           <div>
-            <strong>Room ID:</strong> {room.id}
+            <strong>Room ID:</strong> {room.room_id}
           </div>
           <div>
-            <strong>Building ID:</strong> {room.buildingId}
+            <strong>Building ID:</strong> {room.building_id}
           </div>
           <div>
-            <strong>Max Capacity:</strong> {room.maxCapacity}
+            <strong>Max Students:</strong> {room.max_num_of_students}
           </div>
           <div>
-            <strong>Current Students:</strong> {room.currentStudents}
+            <strong>Current Students:</strong> {room.current_num_of_students}
           </div>
           <div>
-            <strong>Underoccupied:</strong> {room.underoccupied ? 'Yes' : 'No'}
+            <strong>Occupancy Rate:</strong> {room.occupancy_rate}
           </div>
         </div>
       </DialogContent>

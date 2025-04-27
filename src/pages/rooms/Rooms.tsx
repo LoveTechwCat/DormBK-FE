@@ -8,6 +8,8 @@ import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import {
   Room,
+  getAllRooms,
+  getRoomsByBuilding,
   getUnderoccupiedRooms,
   getUnderoccupiedRoomsByBuilding,
 } from '@/services/roomsService';
@@ -23,60 +25,67 @@ const Rooms = () => {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  useEffect(() => {
-    fetchRooms();
-  }, []);
+  const [mode, setMode] = useState<'all' | 'underoccupied'>('all');
 
-  const fetchRooms = async () => {
+  const fetchRooms = async (
+    currentMode: 'all' | 'underoccupied',
+    currentBuilding: string,
+  ) => {
     try {
-      const data = await getUnderoccupiedRooms();
+      let data: Room[] = [];
+      if (currentBuilding === 'all') {
+        if (currentMode === 'all') {
+          data = await getAllRooms();
+        } else {
+          data = await getUnderoccupiedRooms();
+        }
+      } else {
+        if (currentMode === 'all') {
+          data = await getRoomsByBuilding(currentBuilding);
+        } else {
+          data = await getUnderoccupiedRoomsByBuilding(currentBuilding);
+        }
+      }
       setRooms(data);
-      setFilteredRooms(data);
-    } catch {
+    } catch (error) {
+      console.error('Fetch rooms error:', error);
       toast.error('Failed to fetch rooms');
     }
   };
 
-  const fetchRoomsByBuilding = async (buildingId: string) => {
-    try {
-      const data = await getUnderoccupiedRoomsByBuilding(buildingId);
-      setFilteredRooms(data);
-    } catch {
-      toast.error('Failed to fetch rooms by building');
-    }
-  };
+  useEffect(() => {
+    fetchRooms(mode, selectedBuilding);
+  }, [mode, selectedBuilding]);
 
   useEffect(() => {
-    if (selectedBuilding === 'all') {
-      setFilteredRooms(
-        rooms.filter((room) =>
-          room.id.toLowerCase().includes(searchQuery.toLowerCase()),
-        ),
-      );
-    } else {
-      fetchRoomsByBuilding(selectedBuilding);
-    }
-  }, [selectedBuilding]);
-
-  useEffect(() => {
-    let filtered = [...filteredRooms];
+    let result = [...rooms];
 
     if (searchQuery) {
-      filtered = filtered.filter((room) =>
-        room.id.toLowerCase().includes(searchQuery.toLowerCase()),
+      result = result.filter((room) =>
+        room.room_id?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
-    if (sortOrder !== 'none') {
-      filtered.sort((a, b) =>
-        sortOrder === 'asc'
-          ? a.id.localeCompare(b.id)
-          : b.id.localeCompare(a.id),
-      );
+    if (sortOrder === 'asc') {
+      result.sort((a, b) => (a.room_id || '').localeCompare(b.room_id || ''));
+    } else if (sortOrder === 'desc') {
+      result.sort((a, b) => (b.room_id || '').localeCompare(a.room_id || ''));
     }
 
-    setFilteredRooms(filtered);
-  }, [searchQuery, sortOrder]);
+    setFilteredRooms(result);
+  }, [rooms, searchQuery, sortOrder]);
+
+  const handleModeToggle = () => {
+    // Reset toàn bộ state về ban đầu
+    setRooms([]);
+    setFilteredRooms([]);
+    setSearchQuery('');
+    setSelectedBuilding('all');
+    setSortOrder('none');
+    setSelectedRoom(null);
+    setOpenDialog(false);
+    setMode((prev) => (prev === 'all' ? 'underoccupied' : 'all'));
+  };
 
   return (
     <div className='flex min-h-screen w-full flex-col'>
@@ -87,9 +96,22 @@ const Rooms = () => {
           <div className='px-8 py-6'>
             <RoomHeader />
             <div className='rounded-xl bg-white p-6 shadow-md'>
-              <h2 className='mb-4 text-2xl font-semibold text-gray-700'>
-                Room List
-              </h2>
+              <div className='mb-4 flex items-center justify-between'>
+                <h2 className='text-2xl font-semibold text-gray-700'>
+                  {mode === 'all'
+                    ? 'All Rooms List'
+                    : 'Underoccupied Rooms List'}
+                </h2>
+                <button
+                  className='rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700'
+                  onClick={handleModeToggle}
+                >
+                  {mode === 'all'
+                    ? 'Show Underoccupied Rooms'
+                    : 'Show All Rooms'}
+                </button>
+              </div>
+
               <RoomFilter
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}

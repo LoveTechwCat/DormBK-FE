@@ -22,27 +22,21 @@ const RoomTable: FC<Props> = ({ rooms, onView }) => {
         <TableRow>
           <TableHead>Room ID</TableHead>
           <TableHead>Building ID</TableHead>
-          <TableHead>Max Capacity</TableHead>
+          <TableHead>Max Students</TableHead>
           <TableHead>Current Students</TableHead>
-          <TableHead>Underoccupied</TableHead>
+          <TableHead>Occupancy Rate</TableHead>
           <TableHead className='text-center'>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {rooms.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={6} className='text-center'>
-              No rooms found
-            </TableCell>
-          </TableRow>
-        ) : (
-          rooms.map((room) => (
-            <TableRow key={room.id}>
-              <TableCell>{room.id}</TableCell>
-              <TableCell>{room.buildingId}</TableCell>
-              <TableCell>{room.maxCapacity}</TableCell>
-              <TableCell>{room.currentStudents}</TableCell>
-              <TableCell>{room.underoccupied ? 'Yes' : 'No'}</TableCell>
+        {rooms.length > 0 ? (
+          rooms.map((room, index) => (
+            <TableRow key={index}>
+              <TableCell>{room.room_id}</TableCell>
+              <TableCell>{room.building_id}</TableCell>
+              <TableCell>{room.max_num_of_students}</TableCell>
+              <TableCell>{room.current_num_of_students}</TableCell>
+              <TableCell>{room.occupancy_rate}</TableCell>
               <TableCell className='text-center'>
                 <Button
                   size='sm'
@@ -54,6 +48,12 @@ const RoomTable: FC<Props> = ({ rooms, onView }) => {
               </TableCell>
             </TableRow>
           ))
+        ) : (
+          <TableRow key='no-data'>
+            <TableCell colSpan={6} className='text-center'>
+              No rooms found
+            </TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>

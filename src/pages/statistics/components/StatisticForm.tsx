@@ -39,32 +39,36 @@ const StatisticForm = ({ option, formData, onChange, onSubmit }: Props) => {
     }
   };
 
+  const hasDateInput = option.inputs?.some((input) => input.type === 'date');
+
   return (
     <form className='flex flex-col gap-4' onSubmit={onSubmit}>
-      <div className='flex gap-4'>
-        <button
-          type='button'
-          onClick={() => setSelectedMode('manual')}
-          className={`rounded-md px-4 py-2 text-sm font-medium ${
-            selectedMode === 'manual'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 text-gray-700'
-          }`}
-        >
-          Nhập tay
-        </button>
-        <button
-          type='button'
-          onClick={() => setSelectedMode('calendar')}
-          className={`rounded-md px-4 py-2 text-sm font-medium ${
-            selectedMode === 'calendar'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 text-gray-700'
-          }`}
-        >
-          Chọn lịch
-        </button>
-      </div>
+      {hasDateInput && (
+        <div className='flex gap-4'>
+          <button
+            type='button'
+            onClick={() => setSelectedMode('manual')}
+            className={`rounded-md px-4 py-2 text-sm font-medium ${
+              selectedMode === 'manual'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700'
+            }`}
+          >
+            Nhập tay
+          </button>
+          <button
+            type='button'
+            onClick={() => setSelectedMode('calendar')}
+            className={`rounded-md px-4 py-2 text-sm font-medium ${
+              selectedMode === 'calendar'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700'
+            }`}
+          >
+            Chọn lịch
+          </button>
+        </div>
+      )}
 
       {option.inputs?.map((input) => (
         <label key={input.name} className='flex flex-col text-sm text-gray-700'>
@@ -73,46 +77,45 @@ const StatisticForm = ({ option, formData, onChange, onSubmit }: Props) => {
             className='relative flex flex-col gap-2'
             onClick={() => input.type === 'date' && handleDivClick(input.name)}
           >
-            {input.type === 'date' && (
-              <input
-                type='text'
-                disabled={selectedMode !== 'manual'}
-                placeholder='YYYY/MM/DD'
-                value={formData[input.name] || ''}
-                onChange={(e) => handleInputChange(input.name, e.target.value)}
-                className={`w-full rounded-md border px-4 py-2.5 text-base outline-none ${
-                  selectedMode === 'manual'
-                    ? 'border-blue-500 bg-white text-gray-800'
-                    : 'border-gray-300 bg-gray-100 text-gray-400'
-                }`}
-              />
-            )}
-
-            {input.type === 'date' && (
-              <div className='relative'>
+            {input.type === 'date' ? (
+              <>
                 <input
-                  ref={(el) => {
-                    if (input.type === 'date') {
-                      inputRefs.current[input.name] = el;
-                    }
-                  }}
-                  type='date'
-                  disabled={selectedMode !== 'calendar'}
-                  placeholder={input.placeholder}
-                  value={formData[input.name]?.replace(/\//g, '-') || ''}
+                  type='text'
+                  disabled={selectedMode !== 'manual'}
+                  placeholder='YYYY/MM/DD'
+                  value={formData[input.name] || ''}
                   onChange={(e) =>
                     handleInputChange(input.name, e.target.value)
                   }
-                  className={`w-full rounded-md border px-4 py-2.5 pr-10 text-base outline-none ${
-                    selectedMode === 'calendar'
+                  className={`w-full rounded-md border px-4 py-2.5 text-base outline-none ${
+                    selectedMode === 'manual'
                       ? 'border-blue-500 bg-white text-gray-800'
                       : 'border-gray-300 bg-gray-100 text-gray-400'
                   }`}
                 />
-              </div>
-            )}
-
-            {input.type !== 'date' && (
+                <div className='relative'>
+                  <input
+                    ref={(el) => {
+                      if (input.type === 'date') {
+                        inputRefs.current[input.name] = el;
+                      }
+                    }}
+                    type='date'
+                    disabled={selectedMode !== 'calendar'}
+                    placeholder={input.placeholder}
+                    value={formData[input.name]?.replace(/\//g, '-') || ''}
+                    onChange={(e) =>
+                      handleInputChange(input.name, e.target.value)
+                    }
+                    className={`w-full rounded-md border px-4 py-2.5 pr-10 text-base outline-none ${
+                      selectedMode === 'calendar'
+                        ? 'border-blue-500 bg-white text-gray-800'
+                        : 'border-gray-300 bg-gray-100 text-gray-400'
+                    }`}
+                  />
+                </div>
+              </>
+            ) : (
               <input
                 type={input.type}
                 placeholder={input.placeholder}

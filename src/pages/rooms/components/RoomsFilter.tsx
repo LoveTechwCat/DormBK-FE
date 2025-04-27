@@ -24,47 +24,45 @@ const RoomFilter: FC<Props> = ({
   setSelectedBuilding,
   sortOrder,
   setSortOrder,
-}) => {
-  return (
-    <div className='mb-4 flex flex-wrap items-center gap-4'>
-      <Input
-        placeholder='Search by Room ID'
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className='w-64'
-      />
+}) => (
+  <div className='mb-4 flex flex-wrap items-center gap-4'>
+    <Input
+      placeholder='Search by Room ID'
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      className='w-64'
+    />
 
-      <Select
-        value={sortOrder}
-        onValueChange={(value) => setSortOrder(value as 'asc' | 'desc')}
-      >
-        <SelectTrigger className='w-[140px] border'>
-          <SelectValue placeholder='Sort Room ID' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='none'>No Sort</SelectItem>
-          <SelectItem value='asc'>Room ID ↑</SelectItem>
-          <SelectItem value='desc'>Room ID ↓</SelectItem>
-        </SelectContent>
-      </Select>
+    <Select
+      value={sortOrder}
+      onValueChange={(value) => setSortOrder(value as 'none' | 'asc' | 'desc')}
+    >
+      <SelectTrigger className='w-[140px] border'>
+        <SelectValue placeholder='Sort Room ID' />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value='none'>No Sort</SelectItem>
+        <SelectItem value='asc'>Room ID ↑</SelectItem>
+        <SelectItem value='desc'>Room ID ↓</SelectItem>
+      </SelectContent>
+    </Select>
 
-      <Select
-        value={selectedBuilding}
-        onValueChange={(value) => setSelectedBuilding(value)}
-      >
-        <SelectTrigger className='w-[150px] border'>
-          <SelectValue placeholder='All Buildings' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='all'>All Buildings</SelectItem>
-          <SelectItem value='BK001'>BK001</SelectItem>
-          <SelectItem value='BK002'>BK002</SelectItem>
-          <SelectItem value='BK003'>BK003</SelectItem>
-          <SelectItem value='BK004'>BK004</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-};
+    <Select
+      value={selectedBuilding}
+      onValueChange={(value) => setSelectedBuilding(value)}
+    >
+      <SelectTrigger className='w-[180px] border'>
+        <SelectValue placeholder='All Buildings' />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value='all'>All Buildings</SelectItem>
+        <SelectItem value='BK001'>BK001</SelectItem>
+        <SelectItem value='BK002'>BK002</SelectItem>
+        <SelectItem value='BK003'>BK003</SelectItem>
+        <SelectItem value='BK004'>BK004</SelectItem>
+      </SelectContent>
+    </Select>
+  </div>
+);
 
 export default RoomFilter;
