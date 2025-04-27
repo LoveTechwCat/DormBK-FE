@@ -16,7 +16,7 @@ const StudentHeader: FC = () => {
         </p>
       </div>
       <Button
-        className='bg-sky-500 hover:bg-sky-600'
+        className='mr-8 bg-sky-500 hover:bg-sky-600'
         onClick={() => navigate('/students/add')}
       >
         Add student

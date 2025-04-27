@@ -8,8 +8,8 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import EditField from '../../../components/layout/EditField';
-import EditListField from '../../../components/layout/EditListField';
-import EditAddressField from '../../../components/layout/EditAddressField';
+import EditListField from './EditListField';
+import EditAddressField from './EditAddressField';
 import { Student, updateStudent } from '@/services/studentService';
 import ConfirmDialog from '@/components/layout/ConfirmDialog';
 import { Toaster, toast } from 'react-hot-toast';

@@ -78,10 +78,10 @@ const StudentsPage = () => {
       <div className='flex flex-1'>
         <Sidebar />
         <main className='flex flex-1 flex-col justify-between bg-gray-100'>
-          <div className='px-20 py-8'>
+          <div className='p-8'>
             <StudentHeader />
-            <div className='rounded-xl bg-white pb-6 shadow-md'>
-              <div className='sticky top-0 z-20 bg-white px-6 pt-6 pb-2'>
+            <div className='rounded-lg rounded-xl bg-white pb-6 shadow-md'>
+              <div className='sticky top-0 z-20 rounded-lg bg-white px-6 pt-6 pb-2'>
                 <h2 className='mb-4 text-xl font-semibold'>Student List</h2>
                 <StudentFilter
                   searchQuery={searchQuery}

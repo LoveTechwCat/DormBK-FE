@@ -60,3 +60,17 @@ export const getNotFamilyStudent = async (): Promise<Student[]> => {
   const response = await axios.get<Student[]>('/api/students/no-relatives');
   return response.data;
 };
+
+export const addStudent = async (student: Student): Promise<Student> => {
+  try {
+    const response = await axios.post<Student>('/api/students', student, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to add student:', error);
+    throw error;
+  }
+};
