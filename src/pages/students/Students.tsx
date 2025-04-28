@@ -82,7 +82,7 @@ const StudentsPage = () => {
             <StudentHeader />
             <div className='rounded-lg rounded-xl bg-white pb-6 shadow-md'>
               <div className='sticky top-0 z-20 rounded-lg bg-white px-6 pt-6 pb-2'>
-                <h2 className='mb-4 text-xl font-semibold'>Student List</h2>
+                <h2 className='mb-4 text-xl font-semibold'>Students List</h2>
                 <StudentFilter
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}

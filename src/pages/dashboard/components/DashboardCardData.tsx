@@ -10,7 +10,7 @@ export interface CardProps {
 
 export const Cards: CardProps[] = [
   {
-    title: 'Student Management',
+    title: 'Students Management',
     description:
       'View and manage student information, room assignments, and personal details.',
     icon: <FaUser />,

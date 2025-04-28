@@ -5,7 +5,7 @@ const FeatureCards = () => (
   <div className='mt-16 grid grid-cols-1 gap-8 md:grid-cols-3'>
     <FeatureCard
       icon={<FaUser />}
-      title='Student Management'
+      title='Students Management'
       description='Efficiently manage student information, room assignments, and personal records.'
     />
     <FeatureCard

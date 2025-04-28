@@ -33,9 +33,9 @@ export const handleStatisticsSubmit = async (
             if (e.message.toLowerCase().includes('required')) {
               return `${fieldName} is required`;
             }
-            return `${fieldName}: ${e.message}`;
+            return ` ${e.message}`;
           })
-          .map((msg) => `- ${msg}`) // mỗi lỗi thêm dấu gạch đầu dòng
+          .map((msg) => `${msg}`)
           .join('\n');
         throw new Error(errorMessages);
       }

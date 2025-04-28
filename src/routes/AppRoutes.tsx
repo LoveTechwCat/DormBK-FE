@@ -7,6 +7,7 @@ import PrivateRoute from '@/routes/PrivateRoute';
 import Students from '@/pages/students/Students';
 import Statistics from '@/pages/statistics/Statistics';
 import AddStudent from '@/pages/addstudent/AddStudent';
+import Rooms from '@/pages/rooms/Rooms';
 
 export const appRoutes: RouteObject[] = [
   {
@@ -54,6 +55,14 @@ export const appRoutes: RouteObject[] = [
     element: (
       <PrivateRoute>
         <AddStudent />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/rooms',
+    element: (
+      <PrivateRoute>
+        <Rooms />
       </PrivateRoute>
     ),
   },
