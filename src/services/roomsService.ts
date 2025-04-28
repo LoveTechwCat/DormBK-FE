@@ -9,8 +9,17 @@ export interface Room {
   occupancy_rate: string;
 }
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  return {
+    Authorization: token ? `Bearer ${token}` : '',
+  };
+};
+
 export const getAllRooms = async (): Promise<Room[]> => {
-  const res = await axios.get<Room[]>('/api/rooms/');
+  const res = await axios.get<Room[]>('/api/rooms/', {
+    headers: getAuthHeaders(),
+  });
   return res.data;
 };
 

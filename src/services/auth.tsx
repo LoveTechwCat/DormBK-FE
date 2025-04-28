@@ -1,17 +1,27 @@
 import axios from 'axios';
 
-export const login = async (username: string, password: string) => {
+interface LoginResponse {
+  token: string;
+  user: {
+    user_name: string;
+  };
+}
+
+export const login = async (
+  username: string,
+  password: string,
+): Promise<LoginResponse> => {
   try {
-    const response = await axios.post('/api/auth/login', {
+    const response = await axios.post<LoginResponse>('/api/auth/login', {
       user_name: username,
       password,
     });
+
     return response.data;
-  } catch (error: any) {
-    if (error.response && error.response.data && error.response.data.message) {
-      throw new Error(error.response.data.message);
-    } else {
-      throw new Error('An unexpected error occurred');
-    }
+  } catch (error: unknown) {
+    const err = error as { response?: { data?: { message?: string } } };
+    const message =
+      err.response?.data?.message || 'An unexpected error occurred';
+    throw new Error(message);
   }
 };
