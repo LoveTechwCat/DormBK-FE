@@ -61,7 +61,6 @@ export const updateStudent = async (
     const response = await axios.put<Student>(`/api/students/${ssn}`, student, {
       headers: {
         'Content-Type': 'application/json',
-        ...getAuthHeaders(),
       },
     });
     return response.data;
@@ -84,7 +83,6 @@ export const addStudent = async (student: Student): Promise<Student> => {
     const response = await axios.post<Student>('/api/students', student, {
       headers: {
         'Content-Type': 'application/json',
-        ...getAuthHeaders(),
       },
     });
     return response.data;
