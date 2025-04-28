@@ -24,21 +24,30 @@ export const getAllRooms = async (): Promise<Room[]> => {
 };
 
 export const getUnderoccupiedRooms = async (): Promise<Room[]> => {
-  const res = await axios.get<Room[]>('/api/rooms/underoccupied');
+  const res = await axios.get<Room[]>('/api/rooms/underoccupied', {
+    headers: getAuthHeaders(),
+  });
   return res.data;
 };
 
 export const getRoomsByBuilding = async (
   buildingId: string,
 ): Promise<Room[]> => {
-  const res = await axios.get<Room[]>(`/api/rooms/${buildingId}`);
+  const res = await axios.get<Room[]>(`/api/rooms/${buildingId}`, {
+    headers: getAuthHeaders(),
+  });
   return res.data;
 };
 
 export const getUnderoccupiedRoomsByBuilding = async (
   buildingId: string,
 ): Promise<Room[]> => {
-  const res = await axios.get<Room[]>(`/api/rooms/underoccupied/${buildingId}`);
+  const res = await axios.get<Room[]>(
+    `/api/rooms/underoccupied/${buildingId}`,
+    {
+      headers: getAuthHeaders(),
+    },
+  );
   return res.data;
 };
 

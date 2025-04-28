@@ -37,7 +37,9 @@ export const getAllStudents = async (): Promise<Student[]> => {
 
 export const deleteStudent = async (ssn: string): Promise<void> => {
   try {
-    await axios.delete(`/api/students/${ssn}`);
+    await axios.delete(`/api/students/${ssn}`, {
+      headers: getAuthHeaders(),
+    });
   } catch (error) {
     console.error('Failed to delete student:', error);
     throw error;
@@ -45,7 +47,9 @@ export const deleteStudent = async (ssn: string): Promise<void> => {
 };
 
 export const getStudentDetail = async (ssn: string): Promise<Student> => {
-  const response = await axios.get<Student>(`/api/students/${ssn}`);
+  const response = await axios.get<Student>(`/api/students/${ssn}`, {
+    headers: getAuthHeaders(),
+  });
   return response.data;
 };
 
@@ -57,6 +61,7 @@ export const updateStudent = async (
     const response = await axios.put<Student>(`/api/students/${ssn}`, student, {
       headers: {
         'Content-Type': 'application/json',
+        ...getAuthHeaders(),
       },
     });
     return response.data;
@@ -68,7 +73,9 @@ export const updateStudent = async (
 };
 
 export const getNotFamilyStudent = async (): Promise<Student[]> => {
-  const response = await axios.get<Student[]>('/api/students/no-relatives');
+  const response = await axios.get<Student[]>('/api/students/no-relatives', {
+    headers: getAuthHeaders(),
+  });
   return response.data;
 };
 
@@ -77,6 +84,7 @@ export const addStudent = async (student: Student): Promise<Student> => {
     const response = await axios.post<Student>('/api/students', student, {
       headers: {
         'Content-Type': 'application/json',
+        ...getAuthHeaders(),
       },
     });
     return response.data;
