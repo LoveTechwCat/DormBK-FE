@@ -13,12 +13,10 @@ import InputAddress from './InputAddress';
 import { Student, addStudent, updateStudent } from '@/services/studentService';
 import { toast, Toaster } from 'react-hot-toast';
 import {
-  DormitoryCard,
   checkDormitoryCard,
   setDormitoryCard,
   createDormitoryCard,
 } from '@/services/DormitoryCardService';
-import { set } from 'zod';
 
 interface Address {
   commune: string;
@@ -116,7 +114,7 @@ const AddStudentForm = () => {
       formData.has_health_insurance = formData.has_health_insurance === true;
       const validity = await checkDormitoryCard(formData.ssn);
       if (validity === 0) {
-        const data = await addStudent(formData);
+        await addStudent(formData);
         await createDormitoryCard(formData.ssn);
         formData.ssn = formData.new_ssn;
       } else if (validity === 1) {
