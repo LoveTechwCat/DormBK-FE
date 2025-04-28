@@ -10,8 +10,15 @@ import { Button } from '@/components/ui/button';
 import CalendarIcon from '@/assets/calendar.svg';
 import { useState } from 'react';
 import InputAddress from './InputAddress';
-import { Student, addStudent } from '@/services/studentService';
+import { Student, addStudent, updateStudent } from '@/services/studentService';
 import { toast, Toaster } from 'react-hot-toast';
+import {
+  DormitoryCard,
+  checkDormitoryCard,
+  setDormitoryCard,
+  createDormitoryCard,
+} from '@/services/DormitoryCardService';
+import { set } from 'zod';
 
 interface Address {
   commune: string;
@@ -43,6 +50,7 @@ const AddStudentForm = () => {
 
   const [isEditing, setIsEditing] = useState(true);
   const [confirmSaveOpen, setConfirmSaveOpen] = useState(false);
+  const [confirmUpdateOpen, setConfirmUpdateOpen] = useState(false);
 
   const handleChange = (field: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
@@ -71,16 +79,54 @@ const AddStudentForm = () => {
     return list.map((v) => v.trim()).join(';');
   };
 
+  const handleUpdate = async () => {
+    console.log('Updating student:', formData);
+    try {
+      await updateStudent(formData.new_ssn, formData);
+      await setDormitoryCard(formData.new_ssn);
+      setIsEditing(false);
+      toast.success('Student updated successfully!');
+    } catch (error) {
+      if ((error as any).response) {
+        if ((error as any).response.data.error === 'Validation error') {
+          const fieldErrors: Record<string, string[]> = (error as any).response
+            .data.details.fieldErrors;
+
+          const errorMessages = Object.values(fieldErrors)
+            .map((errors: string[]) => errors[0])
+            .join('. ');
+
+          toast.error(`Failed to update student: ${errorMessages}`);
+        } else {
+          toast.error(
+            `Failed to update student: ${(error as any).response.data.message}`,
+          );
+        }
+      } else {
+        toast.error('Failed to update student: Unknown error');
+      }
+    }
+  };
+
   const handleSave = async () => {
     console.log('Saving student:', formData);
     try {
       formData.ssn = formData.new_ssn;
       formData.birthday = formData.birthday.substring(0, 10);
       formData.has_health_insurance = formData.has_health_insurance === true;
-      const data = await addStudent(formData);
-      console.log('Updated student:', data);
+      const validity = await checkDormitoryCard(formData.ssn);
+      if (validity === 0) {
+        const data = await addStudent(formData);
+        await createDormitoryCard(formData.ssn);
+        formData.ssn = formData.new_ssn;
+      } else if (validity === 1) {
+        setConfirmUpdateOpen(true);
+        return;
+      } else {
+        toast.error('Student with this SSN has already existest!');
+        return;
+      }
       setIsEditing(false);
-      formData.ssn = formData.new_ssn;
       toast.success('Student updated successfully!');
     } catch (error) {
       formData.new_ssn = formData.ssn;
@@ -171,19 +217,19 @@ const AddStudentForm = () => {
       )}
       <Toaster />
       <EditField
-        label='SSN(*)'
+        label='SSN (*)'
         value={formData.new_ssn}
         isEditing={isEditing}
         onChange={(v: any) => handleChange('new_ssn', v)}
       />
       <EditField
-        label='Student ID(*)'
+        label='Student ID (*)'
         value={formData.student_id}
         isEditing={isEditing}
         onChange={(v: any) => handleChange('student_id', v)}
       />
       <EditField
-        label='First name(*)'
+        label='First name (*)'
         value={formData.first_name}
         isEditing={isEditing}
         onChange={(v: any) => handleChange('first_name', v)}
@@ -195,7 +241,7 @@ const AddStudentForm = () => {
         onChange={(v: any) => handleChange('last_name', v)}
       />
       <EditField
-        label='Birthday(*)'
+        label='Birthday (*)'
         value={formData.birthday.slice(0, 10)}
         type='date'
         isEditing={isEditing}
@@ -203,7 +249,7 @@ const AddStudentForm = () => {
         icon={<img src={CalendarIcon} className='h-5 w-5' />}
       />
       <SelectField
-        label='Sex(*)'
+        label='Sex (*)'
         value={formData.sex}
         options={[
           { label: 'Male', value: 'M' },
@@ -229,7 +275,7 @@ const AddStudentForm = () => {
         onChange={(v: any) => handleChange('health_state', v)}
       />
       <EditField
-        label='Ethnic Group'
+        label='Ethnic Group (*)'
         value={formData.ethnic_group || ''}
         isEditing={isEditing}
         onChange={(v: any) => handleChange('ethnic_group', v)}
@@ -247,7 +293,7 @@ const AddStudentForm = () => {
         onChange={(v: any) => handleChange('class_name', v)}
       />
       <SelectField
-        label='Study Status'
+        label='Study Status (*)'
         value={formData.study_status || ''}
         options={[
           { label: 'Active', value: 'Active' },
@@ -346,6 +392,14 @@ const AddStudentForm = () => {
         message="Are you sure you want to save this student's information?"
         confirmColor='blue'
         onConfirm={handleSave}
+      />
+      <ConfirmDialog
+        open={confirmUpdateOpen}
+        onOpenChange={setConfirmUpdateOpen}
+        title='Confirm update'
+        message='Student with this SSN has already existest. Do you want to save change?'
+        confirmColor='blue'
+        onConfirm={handleUpdate}
       />
     </div>
   );
