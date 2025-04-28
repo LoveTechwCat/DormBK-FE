@@ -6,6 +6,7 @@ import Dashboard from '@/pages/dashboard/Dashboard';
 import PrivateRoute from '@/routes/PrivateRoute';
 import Students from '@/pages/students/Students';
 import Statistics from '@/pages/statistics/Statistics';
+import AddStudent from '@/pages/addstudent/AddStudent';
 import Rooms from '@/pages/rooms/Rooms';
 
 export const appRoutes: RouteObject[] = [
@@ -46,6 +47,14 @@ export const appRoutes: RouteObject[] = [
     element: (
       <PrivateRoute>
         <Statistics />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/students/add',
+    element: (
+      <PrivateRoute>
+        <AddStudent />
       </PrivateRoute>
     ),
   },

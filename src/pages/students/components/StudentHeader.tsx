@@ -9,14 +9,14 @@ const StudentHeader: FC = () => {
     <div className='mb-6 flex items-start justify-between'>
       <div>
         <div className='mb-2 text-3xl font-bold text-gray-800'>
-          Student Management
+          Students Management
         </div>
-        <p className='text-sm text-gray-600'>
-          All student information in one place — organized and accessible.
+        <p className='text-[16px] text-gray-600'>
+          All students' information in one place — organized and accessible.
         </p>
       </div>
       <Button
-        className='bg-sky-500 hover:bg-sky-600'
+        className='mr-8 bg-sky-500 hover:bg-sky-600'
         onClick={() => navigate('/students/add')}
       >
         Add student

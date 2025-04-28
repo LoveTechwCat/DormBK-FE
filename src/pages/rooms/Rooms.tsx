@@ -97,7 +97,7 @@ const Rooms = () => {
             <RoomHeader />
             <div className='rounded-xl bg-white p-6 shadow-md'>
               <div className='mb-4 flex items-center justify-between'>
-                <h2 className='text-2xl font-semibold text-gray-700'>
+                <h2 className='text-[20px] font-semibold'>
                   {mode === 'all'
                     ? 'All Rooms List'
                     : 'Underoccupied Rooms List'}

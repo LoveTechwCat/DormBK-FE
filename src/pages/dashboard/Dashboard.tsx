@@ -12,7 +12,7 @@ const Dashboard = () => (
       <Sidebar />
       <main className='flex flex-1 flex-col justify-between bg-gray-100'>
         <div className='p-8'>
-          <h2 className='mb-2 text-2xl font-bold text-gray-800'>Dashboard</h2>
+          <h2 className='mb-2 text-3xl font-bold text-gray-800'>Dashboard</h2>
           <p className='mb-8 text-gray-600'>
             Simplify dormitory management with clarity and control.
           </p>
