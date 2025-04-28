@@ -21,8 +21,17 @@ export interface Student {
   addresses: string;
 }
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  return {
+    Authorization: token ? `Bearer ${token}` : '',
+  };
+};
+
 export const getAllStudents = async (): Promise<Student[]> => {
-  const response = await axios.get<Student[]>('/api/students');
+  const response = await axios.get<Student[]>('/api/students', {
+    headers: getAuthHeaders(),
+  });
   return response.data;
 };
 
@@ -52,7 +61,9 @@ export const updateStudent = async (
     });
     return response.data;
   } catch (error) {
-    throw error;
+    const err = error as { response?: { data?: { message?: string } } };
+    const message = err.response?.data?.message || 'Failed to update student';
+    throw new Error(message);
   }
 };
 

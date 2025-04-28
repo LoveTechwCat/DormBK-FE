@@ -12,6 +12,13 @@ interface NumberOfValidDormCards {
   totalCards: number;
 }
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  return {
+    Authorization: token ? `Bearer ${token}` : '',
+  };
+};
+
 export const fetchDisciplinedStudents = async (
   startDate: string,
   endDate: string,
@@ -20,7 +27,8 @@ export const fetchDisciplinedStudents = async (
   const res = await axios.get<NumberOfDisciplinedStudents>(
     `/api/statistics/disciplined-students/`,
     {
-      params: { startDate: startDate, endDate: endDate },
+      params: { startDate, endDate },
+      headers: getAuthHeaders(),
     },
   );
   console.log('Calling fetchDisciplinedStudents');
@@ -32,6 +40,9 @@ export const fetchTotalStudentsByBuilding = async (
 ): Promise<TotalStudentsByBuildingId> => {
   const res = await axios.get<TotalStudentsByBuildingId>(
     `/api/statistics/total-students/${buildingId}`,
+    {
+      headers: getAuthHeaders(),
+    },
   );
   console.log('Calling fetchTotalStudentsByBuilding');
   return res.data;
@@ -39,9 +50,14 @@ export const fetchTotalStudentsByBuilding = async (
 
 export const fetchValidDormCards =
   async (): Promise<NumberOfValidDormCards> => {
+    console.log('Calling fetchValidDormCards');
+
     const res = await axios.get<NumberOfValidDormCards>(
       `/api/statistics/valid-dormitory-cards`,
+      {
+        headers: getAuthHeaders(),
+      },
     );
-    console.log('Calling fetchValidDormCards');
+
     return res.data;
   };
